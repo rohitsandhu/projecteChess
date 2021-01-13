@@ -1,0 +1,76 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.loginFormCustom{
+    border: 2px solid black;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.paddingForm{
+    padding: 30px;
+}
+
+
+.customLoginRow{
+    justify-content: center;
+
+}
+.customLoginRow2{
+    margin-left: 40%;
+
+}
+
+.recordatoriColor{
+    color: #878f9c;
+}
+
+
+.loginBg{
+    background-image: url("../imgs/img1.jpg");
+    height:100vh;
+}
+
+.divLogin{
+    margin-top: 10%!important;
+}
+
+.divCrearTorneig{
+    margin-top: 7%!important;
+}
+
+.crearTorneig{
+ background-image: url("https://wallpaperaccess.com/full/2203449.jpg");
+ height:100vh;
+}
+
+/*.odd{*/
+/*    background-color: white!important;*/
+/*}*/
+
+
+table tr td, th {
+    text-align: center;
+    vertical-align: middle!important;
+    padding: 5px;
+    position: relative;
+    background-color: white;
+}
+
+table  {
+    text-align: center;
+    vertical-align: middle!important;
+    padding: 5px;
+    position: relative;
+    background-color: white;
+}
+
+.table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td.dtr-control:before, table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th.dtr-control:before {
+    background-color: black;
+}
+
+.table.dataTable tbody th.dt-body-right, table.dataTable tbody td.dt-body-right {
+    text-align: center;
+}

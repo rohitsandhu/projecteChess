@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+   hola
+{% endblock %}
+
+{% block estil %}
+    {{ '/css/styles.css' }}
+{% endblock %}
+
+{% block body %}
+<h1>Jugador index</h1>
+
+<div class="container-fluid p-5">
+    <div class="mb-3"><h4> Llista jugadors </h4></div>
+
+    <a href="{{ path('jugador_new') }}">Create new</a>
+    <div class="row">
+        <div class="col-12">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Cognoms</th>
+                    <th>Elo</th>
+                    <th>Pais</th>
+                    <th>Club</th>
+                    <th>Dni</th>
+                    <th>DataNaixament</th>
+                    <th>Mostrar</th>
+                    <th>Editar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for jugador in jugadors %}
+                    <tr>
+                        <td>{{ jugador.id }}</td>
+                        <td>{{ jugador.nom }}</td>
+                        <td>{{ jugador.cognoms }}</td>
+                        <td>{{ jugador.elo }}</td>
+                        <td>{{ jugador.pais }}</td>
+                        <td>{{ jugador.club }}</td>
+                        <td>{{ jugador.dni }}</td>
+                        <td>{{ jugador.dataNaixament ? jugador.dataNaixament|date('Y-m-d') : '' }}</td>
+                        <td>
+                            <a class="btn btn-light" href="{{ path('jugador_show', {'id': jugador.id}) }}">Mostrar</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-light" href="{{ path('jugador_edit', {'id': jugador.id}) }}">Editar</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example')
+            .addClass('nowrap')
+            .dataTable({
+                responsive: true,
+                columnDefs: [
+                    {targets: [0, 1], className: 'dt-body-right'}
+                ]
+            });
+    });
+</script>
+
+{% endblock %}
