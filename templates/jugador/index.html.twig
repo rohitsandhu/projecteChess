@@ -2,12 +2,10 @@
 
 
 {% block title %}
-   hola
+   Llista Jugadors
 {% endblock %}
 
-{% block estil %}
-    {{ '/css/styles.css' }}
-{% endblock %}
+
 
 {% block body %}
 <h1>Jugador index</h1>
@@ -53,7 +51,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="9">no records found</td>
+                        <td colspan="9">No records found</td>
                     </tr>
                 {% endfor %}
                 </tbody>
