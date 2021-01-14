@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Ronda{% endblock %}
+
+{% block body %}
+    <h1>Edit Ronda</h1>
+
+    {{ include('ronda/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('ronda_index') }}">back to list</a>
+
+    {{ include('ronda/_delete_form.html.twig') }}
+{% endblock %}

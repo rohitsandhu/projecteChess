@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ronda{% endblock %}
+
+{% block body %}
+    <h1>Ronda</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ronda.id }}</td>
+            </tr>
+            <tr>
+                <th>NumeroDeRonda</th>
+                <td>{{ ronda.numeroDeRonda }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('ronda_index') }}">back to list</a>
+
+    <a href="{{ path('ronda_edit', {'id': ronda.id}) }}">edit</a>
+
+    {{ include('ronda/_delete_form.html.twig') }}
+{% endblock %}

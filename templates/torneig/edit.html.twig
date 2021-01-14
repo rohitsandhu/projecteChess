@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Torneig{% endblock %}
+
+{% block body %}
+    <h1>Edit Torneig</h1>
+
+    {{ include('torneig/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('torneig_index') }}">back to list</a>
+
+    {{ include('torneig/_delete_form.html.twig') }}
+{% endblock %}

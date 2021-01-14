@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ronda index{% endblock %}
+
+{% block body %}
+    <h1>Ronda index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NumeroDeRonda</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ronda in rondas %}
+            <tr>
+                <td>{{ ronda.id }}</td>
+                <td>{{ ronda.numeroDeRonda }}</td>
+                <td>
+                    <a href="{{ path('ronda_show', {'id': ronda.id}) }}">show</a>
+                    <a href="{{ path('ronda_edit', {'id': ronda.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ronda_new') }}">Create new</a>
+{% endblock %}

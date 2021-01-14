@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Partida index{% endblock %}
+
+{% block body %}
+    <h1>Partida index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>PuntsBlanques</th>
+                <th>PuntsNegres</th>
+                <th>NumeroTaula</th>
+                <th>Bye</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for partida in partidas %}
+            <tr>
+                <td>{{ partida.id }}</td>
+                <td>{{ partida.puntsBlanques }}</td>
+                <td>{{ partida.puntsNegres }}</td>
+                <td>{{ partida.numeroTaula }}</td>
+                <td>{{ partida.bye ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('partida_show', {'id': partida.id}) }}">show</a>
+                    <a href="{{ path('partida_edit', {'id': partida.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('partida_new') }}">Create new</a>
+{% endblock %}

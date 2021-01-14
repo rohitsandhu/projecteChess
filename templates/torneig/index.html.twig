@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Torneig index{% endblock %}
+
+{% block body %}
+    <h1>Torneig index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>NumeroByes</th>
+                <th>Pais</th>
+                <th>NumRondes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for torneig in torneigs %}
+            <tr>
+                <td>{{ torneig.id }}</td>
+                <td>{{ torneig.nom }}</td>
+                <td>{{ torneig.numeroByes }}</td>
+                <td>{{ torneig.pais }}</td>
+                <td>{{ torneig.numRondes }}</td>
+                <td>
+                    <a href="{{ path('torneig_show', {'id': torneig.id}) }}">show</a>
+                    <a href="{{ path('torneig_edit', {'id': torneig.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('torneig_new') }}">Create new</a>
+{% endblock %}

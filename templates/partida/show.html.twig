@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Partida{% endblock %}
+
+{% block body %}
+    <h1>Partida</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ partida.id }}</td>
+            </tr>
+            <tr>
+                <th>PuntsBlanques</th>
+                <td>{{ partida.puntsBlanques }}</td>
+            </tr>
+            <tr>
+                <th>PuntsNegres</th>
+                <td>{{ partida.puntsNegres }}</td>
+            </tr>
+            <tr>
+                <th>NumeroTaula</th>
+                <td>{{ partida.numeroTaula }}</td>
+            </tr>
+            <tr>
+                <th>Bye</th>
+                <td>{{ partida.bye ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('partida_index') }}">back to list</a>
+
+    <a href="{{ path('partida_edit', {'id': partida.id}) }}">edit</a>
+
+    {{ include('partida/_delete_form.html.twig') }}
+{% endblock %}

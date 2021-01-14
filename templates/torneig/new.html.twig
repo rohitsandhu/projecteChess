@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Torneig{% endblock %}
+
+{% block body %}
+    <h1>Create new Torneig</h1>
+
+    {{ include('torneig/_form.html.twig') }}
+
+    <a href="{{ path('torneig_index') }}">back to list</a>
+{% endblock %}
