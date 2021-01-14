@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arbitre index{% endblock %}
+
+{% block body %}
+    <h1>Arbitre index</h1>
+    <a href="{{ path('arbitre_new') }}">Create new</a>
+    <div class="row">
+        <div class="col-12">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Cognoms</th>
+                    <th>Pais</th>
+                    <th>Usuari</th>
+                    <th>Contrasenya</th>
+                    <th>Dni</th>
+                    <th>Mostrar</th>
+                    <th>Editar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for arbitre in arbitres %}
+                    <tr>
+                        <td>{{ arbitre.id }}</td>
+                        <td>{{ arbitre.nom }}</td>
+                        <td>{{ arbitre.cognoms }}</td>
+                        <td>{{ arbitre.pais }}</td>
+                        <td>{{ arbitre.usuari }}</td>
+                        <td>{{ arbitre.contrasenya }}</td>
+                        <td>{{ arbitre.dni }}</td>
+                        <td>
+                            <a href="{{ path('arbitre_show', {'id': arbitre.id}) }}">show</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('arbitre_edit', {'id': arbitre.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#example')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                    columnDefs: [
+                        {targets: [0, 1], className: 'dt-body-right'}
+                    ]
+                });
+        });
+    </script>
+
+{% endblock %}
