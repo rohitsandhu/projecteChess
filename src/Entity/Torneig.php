@@ -54,10 +54,23 @@ class Torneig
      */
     private $numRondes;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $estat;
+
     public function __construct()
     {
         $this->llistaRondes = new ArrayCollection();
         $this->llistaJugadors = new ArrayCollection();
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function getId(): ?int
@@ -177,5 +190,22 @@ class Torneig
         $this->numRondes = $numRondes;
 
         return $this;
+    }
+
+    public function getEstat(): ?string
+    {
+        return $this->estat;
+    }
+
+    public function setEstat(string $estat): self
+    {
+        $this->estat = $estat;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom;
     }
 }

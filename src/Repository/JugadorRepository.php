@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Jugador;
+use App\Entity\Torneig;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +48,66 @@ class JugadorRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function comprobarEnfrontamentAnterior(Jugador $j1, Jugador $j2, Torneig $torneig)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT * FROM partida 
+                left join ronda on ronda.id=partida.ronda_id
+            where 
+                ronda.torneig_id = :id_torneig
+                and (
+                    (peces_blanques_id = :id_j1 and peces_negres_id = :id_j2) 
+                    or (peces_blanques_id = :id_j2 and peces_negres_id = :id_j1)
+                )';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            'id_torneig' => $torneig->getId(),
+            'id_j1' => $j1->getId(),
+            'id_j2' => $j2->getId()
+        ]);
+
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function partidaAnterior(Jugador $j1, Torneig $torneig)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT
+            *
+        FROM
+            partida
+        LEFT JOIN ronda ON ronda.id = partida.ronda_id
+        WHERE
+            ronda.torneig_id = :id_torneig AND(
+                peces_blanques_id = :id_j1  or peces_negres_id = :id_j1 
+            )
+            and bye = 0 
+            and partida.ronda_id = (
+                SELECT
+                    max(partida.ronda_id)
+                FROM
+                    partida
+                LEFT JOIN ronda ON ronda.id = partida.ronda_id
+                WHERE
+                    ronda.torneig_id = :id_torneig AND(
+                        peces_blanques_id = :id_j1  or peces_negres_id = :id_j1 
+                    )
+                    and bye = 0 
+            )";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            'id_torneig' => $torneig->getId(),
+            'id_j1' => $j1->getId(),
+        ]);
+
+
+
+        return $stmt->fetchAllAssociative();
+
+
+    }
+
 }

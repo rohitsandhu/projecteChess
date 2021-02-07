@@ -3,48 +3,59 @@
 {% block title %}Jugador{% endblock %}
 
 {% block body %}
-    <h1>Jugador</h1>
+    <div class="container mt-5">
+        <div class="row">
+            {# <div class="col-2"></div> #}
+            <div class="col-12 p-3 rounded shadow" style="background-color: rgba(255,255,255,0.4)">
+                <h1>Jugador</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ jugador.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ jugador.nom }}</td>
-            </tr>
-            <tr>
-                <th>Cognoms</th>
-                <td>{{ jugador.cognoms }}</td>
-            </tr>
-            <tr>
-                <th>Elo</th>
-                <td>{{ jugador.elo }}</td>
-            </tr>
-            <tr>
-                <th>Pais</th>
-                <td>{{ jugador.pais }}</td>
-            </tr>
-            <tr>
-                <th>Club</th>
-                <td>{{ jugador.club }}</td>
-            </tr>
-            <tr>
-                <th>Dni</th>
-                <td>{{ jugador.dni }}</td>
-            </tr>
-            <tr>
-                <th>DataNaixament</th>
-                <td>{{ jugador.dataNaixament ? jugador.dataNaixament|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                <table class="table table-striped table-bordered shadow round" style="width:100%">
+                    <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ jugador.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ jugador.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cognoms</th>
+                        <td>{{ jugador.cognoms }}</td>
+                    </tr>
+                    <tr>
+                        <th>Elo</th>
+                        <td>{{ jugador.elo }}</td>
+                    </tr>
+                    <tr>
+                        <th>Pais</th>
+                        <td>{{ jugador.pais }}</td>
+                    </tr>
+                    <tr>
+                        <th>Club</th>
+                        <td>{{ jugador.club }}</td>
+                    </tr>
+                    <tr>
+                        <th>Dni</th>
+                        <td>{{ jugador.dni }}</td>
+                    </tr>
+                    <tr>
+                        <th>DataNaixament</th>
+                        <td>{{ jugador.dataNaixament ? jugador.dataNaixament|date('Y-m-d') : '' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
 
-    <a class="btn btn-light" href="{{ path('jugador_index') }}">back to list</a>
+                <a class="btn btn-light" href="{{ path('jugador_index') }}"><i class="bi bi-arrow-return-left"></i>
+                     Tornar Enrera</a>
 
-    <a class="btn btn-light" href="{{ path('jugador_edit', {'id': jugador.id}) }}">edit</a>
+                <a class="btn btn-light" href="{{ path('jugador_edit', {'id': jugador.id}) }}" title="Editar"><i
+                            class="bi bi-pencil"> </i></a>
 
-    {{ include('jugador/_delete_form.html.twig') }}
+                {{ include('jugador/_delete_form.html.twig') }}
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
 {% endblock %}

@@ -3,9 +3,24 @@
 {% block title %}New Torneig{% endblock %}
 
 {% block body %}
-    <h1>Create new Torneig</h1>
+
+
+
+    {% if app.session.get("torneigNoCreat") is not null %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error creant torneig:</strong> Ja existeix un torneig amb aquest nom.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+    {% set tmp = app.session.remove('torneigNoCreat') %}
+
+    
+    <h1 class="text-light mt-2 ml-5">Crear Torneig</h1>
 
     {{ include('torneig/_form.html.twig') }}
-
-    <a href="{{ path('torneig_index') }}">back to list</a>
 {% endblock %}

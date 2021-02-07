@@ -10,52 +10,53 @@
     </div>
 
 
+
     <div class="container align-middle divLogin divCrearTorneig ">
-        <div class="row customLoginRow">
-            <div class="col-lg-8 loginFormCustom p-2    ">
+        <div class="row customLoginRow m-0">
+            <div class="col-10 p-3 rounded shadow" style="background-color: rgba(255,255,255,0.4)">
 
                 <div class="form-group mt-3">
-                    <div class="col-12">
-                        {{ form_row(form.nom) }}
+                    <div class="col-12 text-dark">
+                      <strong>  {{ form_row(form.nom) }}</strong>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-12 text-dark">
+                        <strong> {{ form_row(form.cognoms) }}</strong>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-12">
-                        {{ form_row(form.cognoms) }}
+                        <strong>  {{ form_row(form.elo) }}</strong>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-12">
-                        {{ form_row(form.elo) }}
+                    <div class="col-12 text-dark">
+                        <strong> {{ form_row(form.pais) }}</strong>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-12">
-                        {{ form_row(form.pais) }}
+                    <div class="col-12 text-dark">
+                        <strong> {{ form_row(form.club) }}</strong>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-12">
-                        {{ form_row(form.club) }}
+                    <div class="col-12 text-dark">
+                        <strong> {{ form_row(form.dni) }}</strong>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-12">
-                        {{ form_row(form.dni) }}
+                    <div class="col-12 text-dark">
+                        <strong> {{ form_row(form.dataNaixament) }}</strong>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <div class="col-12">
-                        {{ form_row(form.dataNaixament) }}
-                    </div>
-                </div>
-                <button class="btn btn-light">{{ button_label|default('Save') }}</button>
+                <button class="btn btn-light"><i class="bi bi-save-fill"></i> {{ button_label|default('Guardar') }}</button>
             </div>
         </div>
     </div>

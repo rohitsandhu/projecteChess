@@ -8,6 +8,7 @@ use App\Repository\PartidaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,8 +19,13 @@ class PartidaController extends AbstractController
     /**
      * @Route("/", name="partida_index", methods={"GET"})
      */
-    public function index(PartidaRepository $partidaRepository): Response
+    public function index(PartidaRepository $partidaRepository, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         return $this->render('partida/index.html.twig', [
             'partidas' => $partidaRepository->findAll(),
         ]);
@@ -28,8 +34,13 @@ class PartidaController extends AbstractController
     /**
      * @Route("/new", name="partida_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         $partida = new Partida();
         $form = $this->createForm(PartidaType::class, $partida);
         $form->handleRequest($request);
@@ -51,8 +62,13 @@ class PartidaController extends AbstractController
     /**
      * @Route("/{id}", name="partida_show", methods={"GET"})
      */
-    public function show(Partida $partida): Response
+    public function show(Partida $partida, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         return $this->render('partida/show.html.twig', [
             'partida' => $partida,
         ]);
@@ -61,8 +77,13 @@ class PartidaController extends AbstractController
     /**
      * @Route("/{id}/edit", name="partida_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Partida $partida): Response
+    public function edit(Request $request, Partida $partida, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         $form = $this->createForm(PartidaType::class, $partida);
         $form->handleRequest($request);
 
@@ -81,8 +102,14 @@ class PartidaController extends AbstractController
     /**
      * @Route("/{id}", name="partida_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Partida $partida): Response
+    public function delete(Request $request, Partida $partida, SessionInterface $session): Response
     {
+
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         if ($this->isCsrfTokenValid('delete'.$partida->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($partida);

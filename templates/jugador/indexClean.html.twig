@@ -9,7 +9,7 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="row m-0 m-5 ">
+    <div class="row m-0 m-5 ">
 
         <div class="col-12 p-3 rounded shadow" style="background-color: rgba(255,255,255,0.4)">
             <div class="mb-3"><h4> Llista jugadors </h4></div>
@@ -28,8 +28,7 @@
                             <th>Club</th>
                             <th>Dni</th>
                             <th>DataNaixament</th>
-                            <th>Mostrar</th>
-                            <th>Editar</th>
+                            <th>Llistar tornejos</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,14 +43,12 @@
                                 <td>{{ jugador.dni }}</td>
                                 <td>{{ jugador.dataNaixament ? jugador.dataNaixament|date('Y-m-d') : '' }}</td>
                                 <td>
-                                    <a class="btn btn-light" title="Mostrar"
-                                       href="{{ path('jugador_show', {'id': jugador.id}) }}"><i
-                                                class="bi bi-eye"></i></a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-light" title="Editar"
-                                       href="{{ path('jugador_edit', {'id': jugador.id}) }}"><i
-                                                class="bi bi-pencil"></i></a>
+                                    <form action="{{ path('tornejosJugador') }}" method="post">
+                                        <input type="hidden" name="idJugador" value="{{ jugador.id() }}">
+                                        <button type="submit" name="addJugadorTorneig" class="btn btn-light"><i
+                                                    class="bi bi-card-list"></i></button>
+                                        {# <input type="submit" name="addJugadorTorneig" class="btn btn-light" value="Apuntar"> #}
+                                    </form>
                                 </td>
                             </tr>
                         {% else %}
@@ -61,7 +58,6 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    <a class="btn btn-light" href="{{ path('jugador_new') }}"><i class="bi bi-plus"></i> Crear nou jugador</a>
                 </div>
             </div>
         </div>
@@ -91,8 +87,8 @@
                         "paginate": {
                             "first": "Primer",
                             "previous": "Anterior",
-                            "next": "SegÃ¼ent",
-                            "last": "Ãšltim"
+                            "next": "Següent",
+                            "last": "Últim"
                         },
                         "aria": {
                             "sortAscending": ": Activa per ordenar la columna de manera ascendent",

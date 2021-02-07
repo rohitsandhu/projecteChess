@@ -47,4 +47,15 @@ class PartidaRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function trobarPartesPerIdRonda(int $id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT * FROM partida where ronda_id = :id';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
 }

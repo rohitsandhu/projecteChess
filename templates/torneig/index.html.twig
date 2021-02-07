@@ -3,39 +3,211 @@
 {% block title %}Torneig index{% endblock %}
 
 {% block body %}
-    <h1>Torneig index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>NumeroByes</th>
-                <th>Pais</th>
-                <th>NumRondes</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for torneig in torneigs %}
-            <tr>
-                <td>{{ torneig.id }}</td>
-                <td>{{ torneig.nom }}</td>
-                <td>{{ torneig.numeroByes }}</td>
-                <td>{{ torneig.pais }}</td>
-                <td>{{ torneig.numRondes }}</td>
-                <td>
-                    <a href="{{ path('torneig_show', {'id': torneig.id}) }}">show</a>
-                    <a href="{{ path('torneig_edit', {'id': torneig.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if app.session.get("torneigNoCreat") is not null %}
 
-    <a href="{{ path('torneig_new') }}">Create new</a>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error creant torneig:</strong> Ja existeix un torneig amb aquest nom.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+    {% set tmp = app.session.remove('torneigNoCreat') %}
+
+
+    {% if app.session.get("ErrorsComençant1") is not null %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error començant torneig:</strong> Hi ha massa poques rondes per els jugadors que hi han. (min Rondes
+            = log^2 Jugadors).
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+    {% endif %}
+
+    {% set tmp = app.session.remove('ErrorsComençant1') %}
+
+
+    {% if app.session.get("ErrorsComençant2") is not null %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error començant torneig:</strong> Hi ha masses rondes per els jugadors participants (max Rondes =
+            jugadors/2 ) o masses pocs jugadors per les rondes.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+    {% set tmp = app.session.remove('ErrorsComençant2') %}
+
+
+
+    {% if app.session.get("començat") is not null %}
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Torneig començat</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+    {% set tmp = app.session.remove('començat') %}
+
+    <div class="container-fluid p-5">
+
+        <div class="row">
+            <div class="col-12 p-3 rounded shadow" style="background-color: rgba(255,255,255,0.4)">
+                <div class="mb-3"><h2> LLISTA TORNEJOS </h2></div>
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>NumeroByes</th>
+                        <th>Pais</th>
+                        <th>NumRondes</th>
+                        <th>Estat</th>
+                        <th>Mostrar</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                        <th>Llista jugadors</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for torneig in torneigs %}
+                        <tr>
+                            <td>{{ torneig.id }}</td>
+                            <td>{{ torneig.nom }}</td>
+                            <td>{{ torneig.numeroByes }}</td>
+                            <td>{{ torneig.pais }}</td>
+                            <td>{{ torneig.numRondes }}</td>
+                            <td>{{ torneig.estat }}</td>
+                            <td>
+                                <a class="btn btn-light"
+                                   href="{{ path('torneig_show', {'id': torneig.id}) }}"><i class="bi bi-eye"></i></a>
+                            </td>
+                            <td>
+
+                                {% if torneig.estat == "Esperant Jugadors" %}
+                                    <a class="btn btn-light"
+                                       href="{{ path('torneig_edit', {'id': torneig.id}) }}" title="Editar"><i
+                                                class="bi bi-pencil"></i></a>
+                                {% else %}
+                                    <button class="btn btn-light" disabled title="Torneig Començar"><i
+                                                class="bi bi-pencil"></i></button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ include('torneig/_delete_form.html.twig') }}
+                            </td>
+                            <td>
+                                <a class="btn-light btn" href="{{ path('llistarJugadors', {'id': torneig.id}) }}"><i
+                                            class="bi bi-person-plus"></i></a>
+                            </td>
+                            <td>
+                                {% if torneig.estat == "Preparar ronda" %}
+                                    <form action="{{ path('prepararRonda') }}" method="post">
+                                        <input type="hidden" name="idTorneig" value="{{ torneig.id }}">
+                                        <input type="submit" class="btn btn-light" value="Preparar">
+                                    </form>
+                                {% elseif torneig.estat == "Esperant Jugadors" %}
+                                    <form action="{{ path('començar') }}" method="post">
+                                        <input type="hidden" name="idTorneig" value="{{ torneig.id }}">
+                                        <input type="submit" class="btn btn-light" value="Iniciar">
+                                    </form>
+                                {% elseif torneig.estat == "Posar resultats" %}
+                                    
+                                    <form action="{{ path('getRondaResults') }}" method="post">
+                                        <input type="hidden" name="idTorneig" value="{{ torneig.id }}">
+                                        <input type="submit" class="btn btn-light" value="Posar Resultats">
+                                    </form>
+                                {% elseif torneig.estat == "acabat" %}
+
+                                    <form action="{{ path('resultatTorneig') }}" method="post">
+                                        <input type="hidden" name="idTorneig" value="{{ torneig.id }}">
+                                        <input type="submit" class="btn btn-light" value="Veure Resultats">
+                                    </form>
+
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11">No hi han tornejos</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                    ordering: false,
+                    columnDefs: [
+                        {targets: [0, 1], className: 'dt-body-right'}
+                    ],
+                    language: {
+                        "processing": "Processant...",
+                        "lengthMenu": "Mostra _MENU_ registres",
+                        "zeroRecords": "No s'han trobat registres",
+                        "emptyTable": "No hi ha registres disponible en aquesta taula",
+                        "info": "Mostrant del _START_ al _END_ d'un total de _TOTAL_ registres",
+                        "infoEmpty": "No hi ha registres disponibles",
+                        "infoFiltered": "(filtrat de _MAX_ registres)",
+                        "search": "Cerca:",
+                        "infoThousands": ".",
+                        "decimal": ",",
+                        "loadingRecords": "Carregant...",
+                        "paginate": {
+                            "first": "Primer",
+                            "previous": "Anterior",
+                            "next": "Següent",
+                            "last": "Últim"
+                        },
+                        "aria": {
+                            "sortAscending": ": Activa per ordenar la columna de manera ascendent",
+                            "sortDescending": ": Activa per ordenar la columna de manera descendent"
+                        },
+                        "buttons": {
+                            "print": "Imprimeix",
+                            "copy": "Copia",
+                            "colvis": "Columnes",
+                            "copyTitle": "Copia al portapapers",
+                            "copySuccess": {
+                                "_": "%d files copiades",
+                                "1": "1 fila copiada"
+                            },
+                            "pageLength": {
+                                "-1": "Mostra totes les files",
+                                "_": "Mostra %d files"
+                            }
+                        },
+                        "select": {
+                            "rows": {
+                                "_": "%d files seleccionades",
+                                "0": "Cap fila seleccionada",
+                                "1": "1 fila seleccionada"
+                            }
+                        }
+                    }
+                });
+
+        });
+    </script>
+
 {% endblock %}

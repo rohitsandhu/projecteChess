@@ -23,6 +23,14 @@ class Partida
     private $pecesBlanques;
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @ORM\ManyToOne(targetEntity=Jugador::class)
      */
     private $pecesNegres;
@@ -51,6 +59,11 @@ class Partida
      * @ORM\ManyToOne(targetEntity=Ronda::class, inversedBy="llistaPartides")
      */
     private $ronda;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $resultat;
 
     public function getId(): ?int
     {
@@ -140,4 +153,23 @@ class Partida
 
         return $this;
     }
+
+    public function getResultat(): ?string
+    {
+        return $this->resultat;
+    }
+
+    public function setResultat(?string $resultat): self
+    {
+        $this->resultat = $resultat;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->id;
+    }
+
+
 }

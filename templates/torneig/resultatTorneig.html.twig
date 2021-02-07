@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Torneig index{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid p-5">
+
+        <div class="row">
+
+
+
+            <div class="col-12  p-3 rounded shadow mt-2 mb-2" style="background-color: rgba(255,255,255,0.4)">
+                <div class="mb-3"><h2> Podium </h2></div>
+
+                <div class="container-fluid">
+                    <div class="d-flex flex-column align-items-center">
+                        <div style="max-width: 550px;">
+                            <div style="position: relative;" class="d-flex w-100 justify-content-center">
+                                <span style="position: absolute; top: 35px; left: 50px; color: silver; font-weight: bold; font-weight: bold;">{{ jugadors[1].idJugador.nom }} </span>
+                                <span style="color: goldenrod; font-weight: bold;">{{ jugadors[0].idJugador.nom }}</span>
+                                <span style="position: absolute; top: 55px; right: 60px; color: #915136; font-weight: bold;">{{ jugadors[2].idJugador.nom }} </span>
+                            </div>
+                            <div class="d-flex align-items-end">
+                                <img style="max-width: 166px; height: 190px;" src="{{ '/imgs/podium2.png'  }}">
+                                <img style="max-width: 166px;" src="{{ '/imgs/podium1.png'  }}">
+                                <img style="max-width: 166px; height: 170px; " src="{{ '/imgs/podium3.png'  }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 p-3 rounded shadow" style="background-color: rgba(255,255,255,0.4)">
+                <div class="mb-3"><h2> Resultat final </h2></div>
+
+
+
+
+
+                <table id="example" class="table table-striped table-bordered shadow rounded" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Posició</th>
+                        <th>Nom</th>
+                        <th>Elo</th>
+                        <th>Punts</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set xd = 1 %}
+                    {% for j in jugadors %}
+                        <tr>
+                            <td>{{ xd }}</td>
+                            <td>{{ j.idJugador.nom }} {{ j.idJugador.cognoms }}</td>
+                            <td>{{ j.idJugador.elo }}</td>
+                            <td>{{ j.punts }}</td>
+                        </tr>
+                        {% set xd = xd + 1 %}
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            {% for ronda in torneig.llistaRondes %}
+                <div class="col-12 p-3 rounded shadow mt-5" style="background-color: rgba(255,255,255,0.4)">
+                    <div class="mb-3"><h2> Resultat ronda {{ ronda.numeroDeRonda }} </h2></div>
+                    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Num Taula</th>
+                            <th>ID J. P. Blanques</th>
+                            <th>Nom</th>
+                            <th>Punts peces blanques</th>
+                            <th>Punts peces negres</th>
+                            <th>ID J. P. Negres</th>
+                            <th>Nom</th>
+                            <th>Bye?</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for partida in ronda.llistaPartides %}
+
+                        <tr>
+                                {% if partida.resultat == "Posat" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+
+                                    <td> {{ partida.puntsBlanques() }} </td>
+                                    <td> {{ partida.puntsNegres() }} </td>
+                                    <td> {{ partida.pecesNegres().id() }} </td>
+                                    <td> {{ partida.pecesNegres().nom() }}  {{ partida.pecesNegres().cognoms() }} </td>
+                                    <td>No</td>
+                                {% elseif partida.resultat == "Bye voluntari" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+                                    <td>0</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Bye voluntari</td>
+                                    {# <td colspan="4"> #}
+                                    {# Bye voluntari #}
+                                    {# </td> #}
+                                {% elseif partida.resultat == "Bye no voluntari" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+                                    <td> 1</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Bye no voluntari</td>
+                                    {# <td colspan="4"> #}
+                                    {# #}
+                                    {# </td> #}
+
+                                {% elseif partida.resultat == "Posat" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+                                    <td> {{ partida.puntsBlanques() }} </td>
+                                    <td> {{ partida.puntsNegres() }} </td>
+                                    <td> {{ partida.pecesNegres().id() }} </td>
+                                    <td> {{ partida.pecesNegres().nom() }}  {{ partida.pecesNegres().cognoms() }} </td>
+                                    <td>{{ partida.resultat() }}</td>
+
+                                {% endif %}
+                        </tr>
+
+                    {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                    ordering: false,
+                    columnDefs: [
+                        {targets: [0, 1], className: 'dt-body-right'}
+                    ],
+                    language: {
+                        "processing": "Processant...",
+                        "lengthMenu": "Mostra _MENU_ registres",
+                        "zeroRecords": "No s'han trobat registres",
+                        "emptyTable": "No hi ha registres disponible en aquesta taula",
+                        "info": "Mostrant del _START_ al _END_ d'un total de _TOTAL_ registres",
+                        "infoEmpty": "No hi ha registres disponibles",
+                        "infoFiltered": "(filtrat de _MAX_ registres)",
+                        "search": "Cerca:",
+                        "infoThousands": ".",
+                        "decimal": ",",
+                        "loadingRecords": "Carregant...",
+                        "paginate": {
+                            "first": "Primer",
+                            "previous": "Anterior",
+                            "next": "Següent",
+                            "last": "Últim"
+                        },
+                        "aria": {
+                            "sortAscending": ": Activa per ordenar la columna de manera ascendent",
+                            "sortDescending": ": Activa per ordenar la columna de manera descendent"
+                        },
+                        "buttons": {
+                            "print": "Imprimeix",
+                            "copy": "Copia",
+                            "colvis": "Columnes",
+                            "copyTitle": "Copia al portapapers",
+                            "copySuccess": {
+                                "_": "%d files copiades",
+                                "1": "1 fila copiada"
+                            },
+                            "pageLength": {
+                                "-1": "Mostra totes les files",
+                                "_": "Mostra %d files"
+                            }
+                        },
+                        "select": {
+                            "rows": {
+                                "_": "%d files seleccionades",
+                                "0": "Cap fila seleccionada",
+                                "1": "1 fila seleccionada"
+                            }
+                        }
+                    }
+                });
+
+        });
+
+    </script>
+
+{% endblock %}

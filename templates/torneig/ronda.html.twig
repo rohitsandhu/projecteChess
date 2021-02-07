@@ -1,0 +1,259 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Resultats Ronda{% endblock %}
+
+{% block body %}
+
+{#    <nav class=" navbar navbar-expand-lg navbar-dark bg-dark">#}
+{#        <a class="navbar-brand js-scroll-trigger" href="{{ path('main') }}"> Chess&nbsp;<img width="40px"#}
+{#                                                                                             src="{{ '/imgs/iconKing.png' }}"#}
+{#                                                                                             alt=""/>&nbsp;King</a>#}
+{#        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"#}
+{#                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#            <ul class="navbar-nav mr-auto">#}
+
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link " style="color: white;" href="{{ path('torneig_index') }}"> Llista tornejos </a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link " style="color: white;" href="{{ path('torneig_new') }}"> Crear#}
+{#                        Torneig </a>#}
+{#                </li>#}
+
+{#            </ul>#}
+{#            <ul class="navbar-nav text-uppercase ml-auto">#}
+
+
+{#                {% if app.session.get('arbitreLogged') != null %}#}
+{#                    <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color: white;"#}
+{#                                            href="{{ path('logout') }}">LOG OUT</a></li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+{#    </nav>#}
+
+
+    {% if errorNumeros is defined %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error incerint resultats:</strong> Hi ha hagut algun tipus de error incerint els resultats.
+            <br>
+            Comprovi que els resultats incerits siguin correctes.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+
+
+    {% if resultatOk is defined %}
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Resultat Incerit Correctament</strong> <br> Resultat posat correctament.
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+
+    {% if rondaNoAcabada is defined %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error al intentar acabar la ronda.</strong>
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+    {% endif %}
+
+
+    <div class="container-fluid p-5">
+        <div class="mb-3 text-white">
+            <h2> Ronda {{ ronda.numeroDeRonda }}</h2>
+        </div>
+        <div class="row m-0">
+            <div class="col-12">
+
+                <table id="example1" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Num Taula</th>
+                        <th>ID J. P. Blanques</th>
+                        <th>Nom</th>
+                        <th>Punts peces blanques</th>
+                        <th>Punts peces negres</th>
+                        <th>ID J. P. Negres</th>
+                        <th>Nom</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for partida in ronda.llistaPartides %}
+
+                        <tr>
+                            <form action="{{ path('guardarPuntuacio') }}" method="post">
+                                {% if partida.resultat == null %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+
+                                    <td>
+                                        <select class="form-control" name="puntsBlanques">
+                                            <option value="0">0</option>
+                                            <option value="0.5">0.5</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <select class="form-control" name="puntsNegres">
+                                            <option value="0">0</option>
+                                            <option value="0.5">0.5</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                    </td>
+
+                                    <td> {{ partida.pecesNegres().id() }} </td>
+                                    <td> {{ partida.pecesNegres().nom() }}  {{ partida.pecesNegres().cognoms() }} </td>
+
+                                    <input type="hidden" name="idTorneig" value="{{ ronda.torneig.id() }}">
+                                    <input type="hidden" name="idPartida" value="{{ partida.id() }}">
+                                    <input type="hidden" name="idBlanques" value="{{ partida.pecesBlanques.id() }}">
+                                    <input type="hidden" name="idNegres" value="{{ partida.pecesNegres.id() }}">
+                                    <td><input type="submit" class="btn btn-light" value="Guardar Resultats"></td>
+                                {% elseif partida.resultat == "Bye voluntari" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+                                    <td>+0</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Bye voluntari</td>
+                                    {# <td colspan="4"> #}
+                                    {# Bye voluntari #}
+                                    {# </td> #}
+                                {% elseif partida.resultat == "Bye no voluntari" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+                                    <td> +1</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Bye no voluntari</td>
+                                    {# <td colspan="4"> #}
+                                    {# #}
+                                    {# </td> #}
+
+                                {% elseif partida.resultat == "Posat" %}
+                                    <td> {{ partida.numeroTaula() }} </td>
+                                    <td> {{ partida.pecesBlanques().id() }} </td>
+                                    <td> {{ partida.pecesBlanques().nom() }}  {{ partida.pecesBlanques().cognoms() }} </td>
+                                    <td> {{ partida.puntsBlanques() }} </td>
+                                    <td> {{ partida.puntsNegres() }} </td>
+                                    <td> {{ partida.pecesNegres().id() }} </td>
+                                    <td> {{ partida.pecesNegres().nom() }}  {{ partida.pecesNegres().cognoms() }} </td>
+                                    <td>{{ partida.resultat() }}</td>
+
+                                {% endif %}
+                            </form>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+                {% if ronda.torneig.numRondes == ronda.numeroDeRonda %}
+
+                    <form action="{{ path('acabarRonda') }}" method="post">
+                        <input type="hidden" name="idRonda" value="{{ ronda.id() }}">
+                        <input type="hidden" name="idTorneig" value="{{ ronda.torneig.id() }}">
+                        <input type="submit" name="acabarTorneig" class="btn btn-secondary" value="Acabar Torneig">
+                    </form>
+
+                {% else %}
+                    <form action="{{ path('acabarRonda') }}" method="post">
+                        <input type="hidden" name="idRonda" value="{{ ronda.id() }}">
+                        <input type="hidden" name="idTorneig" value="{{ ronda.torneig.id() }}">
+                        <input type="submit" name="acabar ron" class="btn btn-secondary" value="Acabar Ronda">
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function () {
+            $('#example1')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                    ordering: false,
+                    columnDefs: [
+                        {targets: [0, 1], className: 'dt-body-right'}
+                    ],
+                    language: {
+                        "processing": "Processant...",
+                        "lengthMenu": "Mostra _MENU_ registres",
+                        "zeroRecords": "No s'han trobat registres",
+                        "emptyTable": "No hi ha registres disponible en aquesta taula",
+                        "info": "Mostrant del _START_ al _END_ d'un total de _TOTAL_ registres",
+                        "infoEmpty": "No hi ha registres disponibles",
+                        "infoFiltered": "(filtrat de _MAX_ registres)",
+                        "search": "Cerca:",
+                        "infoThousands": ".",
+                        "decimal": ",",
+                        "loadingRecords": "Carregant...",
+                        "paginate": {
+                            "first": "Primer",
+                            "previous": "Anterior",
+                            "next": "Següent",
+                            "last": "Últim"
+                        },
+                        "aria": {
+                            "sortAscending": ": Activa per ordenar la columna de manera ascendent",
+                            "sortDescending": ": Activa per ordenar la columna de manera descendent"
+                        },
+                        "buttons": {
+                            "print": "Imprimeix",
+                            "copy": "Copia",
+                            "colvis": "Columnes",
+                            "copyTitle": "Copia al portapapers",
+                            "copySuccess": {
+                                "_": "%d files copiades",
+                                "1": "1 fila copiada"
+                            },
+                            "pageLength": {
+                                "-1": "Mostra totes les files",
+                                "_": "Mostra %d files"
+                            }
+                        },
+                        "select": {
+                            "rows": {
+                                "_": "%d files seleccionades",
+                                "0": "Cap fila seleccionada",
+                                "1": "1 fila seleccionada"
+                            }
+                        }
+                    }
+                });
+        });
+
+    </script>
+
+{% endblock %}

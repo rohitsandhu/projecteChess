@@ -32,10 +32,10 @@
                         <td>{{ arbitre.contrasenya }}</td>
                         <td>{{ arbitre.dni }}</td>
                         <td>
-                            <a href="{{ path('arbitre_show', {'id': arbitre.id}) }}">show</a>
+                            <a class="btn btn-light" href="{{ path('arbitre_show', {'id': arbitre.id}) }}">show</a>
                         </td>
                         <td>
-                            <a href="{{ path('arbitre_edit', {'id': arbitre.id}) }}">edit</a>
+                            <a class="btn btn-light" href="{{ path('arbitre_edit', {'id': arbitre.id}) }}">edit</a>
                         </td>
                     </tr>
                 {% else %}

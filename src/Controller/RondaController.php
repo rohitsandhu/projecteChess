@@ -8,6 +8,7 @@ use App\Repository\RondaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,8 +19,13 @@ class RondaController extends AbstractController
     /**
      * @Route("/", name="ronda_index", methods={"GET"})
      */
-    public function index(RondaRepository $rondaRepository): Response
+    public function index(RondaRepository $rondaRepository, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         return $this->render('ronda/index.html.twig', [
             'rondas' => $rondaRepository->findAll(),
         ]);
@@ -28,8 +34,14 @@ class RondaController extends AbstractController
     /**
      * @Route("/new", name="ronda_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
+
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         $ronda = new Ronda();
         $form = $this->createForm(RondaType::class, $ronda);
         $form->handleRequest($request);
@@ -51,8 +63,13 @@ class RondaController extends AbstractController
     /**
      * @Route("/{id}", name="ronda_show", methods={"GET"})
      */
-    public function show(Ronda $ronda): Response
+    public function show(Ronda $ronda, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         return $this->render('ronda/show.html.twig', [
             'ronda' => $ronda,
         ]);
@@ -61,8 +78,13 @@ class RondaController extends AbstractController
     /**
      * @Route("/{id}/edit", name="ronda_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Ronda $ronda): Response
+    public function edit(Request $request, Ronda $ronda, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         $form = $this->createForm(RondaType::class, $ronda);
         $form->handleRequest($request);
 
@@ -81,8 +103,13 @@ class RondaController extends AbstractController
     /**
      * @Route("/{id}", name="ronda_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Ronda $ronda): Response
+    public function delete(Request $request, Ronda $ronda, SessionInterface $session): Response
     {
+        if ($session->get('arbitreLogged') ==null){
+            return $this->render('index.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
         if ($this->isCsrfTokenValid('delete'.$ronda->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ronda);

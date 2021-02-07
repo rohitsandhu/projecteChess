@@ -20,7 +20,7 @@ class Ronda
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Partida::class, mappedBy="ronda")
+     * @ORM\OneToMany(targetEntity=Partida::class, mappedBy="ronda", cascade="persist")
      */
     private $llistaPartides;
 
@@ -33,6 +33,11 @@ class Ronda
      * @ORM\ManyToOne(targetEntity=Torneig::class, inversedBy="llistaRondes")
      */
     private $torneig;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $estestat;
 
 
     public function __construct()
@@ -61,6 +66,14 @@ class Ronda
         }
 
         return $this;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     public function removeLlistaPartide(Partida $llistaPartide): self
@@ -97,6 +110,24 @@ class Ronda
         $this->torneig = $torneig;
 
         return $this;
+    }
+
+    public function getEstestat(): ?string
+    {
+        return $this->estestat;
+    }
+
+    public function setEstestat(?string $estestat): self
+    {
+        $this->estestat = $estestat;
+
+        return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->id." ".$this->numeroDeRonda;
     }
 
 

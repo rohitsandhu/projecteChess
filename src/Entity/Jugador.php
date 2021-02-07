@@ -23,6 +23,14 @@ class Jugador
     private $nom;
 
     /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $cognoms;
@@ -139,5 +147,10 @@ class Jugador
         $this->dataNaixament = $dataNaixament;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom." ".$this->cognoms;
     }
 }

@@ -3,9 +3,9 @@
 {% block title %}New Jugador{% endblock %}
 
 {% block body %}
-    <h1>Create new Jugador</h1>
+    <h1 class="text-light mt-2 ml-5">Crear Jugador</h1>
 
     {{ include('jugador/_form.html.twig') }}
 
-    <a href="{{ path('jugador_index') }}">back to list</a>
+    <a class="btn btn-light ml-3" href="{{ path('jugador_index') }}">Torna enrera</a>
 {% endblock %}
