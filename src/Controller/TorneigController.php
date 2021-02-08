@@ -518,14 +518,14 @@ class TorneigController extends AbstractController
         $rondaExisteix = $rr->findTotesLesRondesPerId($torneig->getId(), $tr, $jr, $pr);
         //  || count($rondaExisteix) <= 0
         if (empty($rondaExisteix)) {
-            $ronda = $this->firstRound($torneig, $arrayJugadorsPlaying, $entityManager, $arrayJugadorsBye, $bjtr);
+            $ronda = $this->firstRound($torneig, $arrayJugadorsPlaying, $entityManager, $arrayJugadorsBye, $bjtr, $session);
 
             return $this->render('torneig/ronda.html.twig', [
                 'ronda' => $ronda,
             ]);
         } else {
             //dump($bjtr->findTotsElsJugadorsTorneig($torneig, $jr));
-            $ronda = $this->goNext($torneig, $arrayJugadorsPlaying, $entityManager, $arrayJugadorsBye, $array, $jr);
+            $ronda = $this->goNext($torneig, $arrayJugadorsPlaying, $entityManager, $arrayJugadorsBye, $array, $jr, $session);
 
             return $this->render('torneig/ronda.html.twig', [
                 'ronda' => $ronda,
@@ -1011,8 +1011,10 @@ class TorneigController extends AbstractController
 
                 $entityManager->persist($torneig);
                 $entityManager->flush();
+                $arrayjugadors = $bjtr->findTotsElsJugadorsTorneig2($torneig, $jr);
 
                 return $this->render('torneig/resultatTorneig.html.twig', [
+                    'jugadors' => $arrayjugadors,
                     'torneig' => $torneig,
                 ]);
             }
